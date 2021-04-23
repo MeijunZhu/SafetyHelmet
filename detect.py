@@ -7,6 +7,22 @@ import re
 import commands
 import datetime
 import threading
+import subprocess
+
+
+
+
+def startWatch(m,s):
+    timeLeft=60*m+s
+    while timeLeft>0:
+        time.sleep(1)
+        timeLeft-=1
+    playvoice()
+
+
+
+
+
 
 def playvoice():
     os.system('omxplayer -o local jinbao.mp3')
@@ -22,12 +38,13 @@ def cameraphotos():
     node=uuid.getnode()
     mac=uuid.UUID(int=node).hex[-12:]
     a=commands.getoutput("fswebcam --no-banner -r 640x480 "+mac+".jpg")
+    print(a)
     #print(a)
-    path=r'/home/pi/Desktop/SafetyHelmet/'+mac+'.jpg'
+    path=r'/home/pi/'+mac+'.jpg'
     
     if os.path.exists(path):
         url = "http://10.186.162.179:8080/test/"
-        path_file0="/home/pi/Desktop/SafetyHelmet/"+mac+".jpg"
+        path_file0="/home/pi/"+mac+".jpg"
         files = {'file0':open(path_file0,'rb')}
         result = requests.post(url=url,files=files)
         existstr="no_helmet" in result.text
@@ -41,7 +58,7 @@ def cameraphotos():
 
 
 
-
+startWatch(0,30)
     
 #ath1=cameraphotos() 
 
